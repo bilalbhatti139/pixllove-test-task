@@ -76,6 +76,17 @@ router.post("/register",validateRegisterInput, register);
 
 router.post("/login",validateLoginInput,login);
 
-router.post("/logOut",isAuth, logOut);
+
+/**
+ * @swagger
+ * /auth/logOut:
+ *   get:
+ *     summary: User logOut
+ *     tags: [Auth]
+ *     responses:
+ *       200:
+ *         description:
+ */
+router.get("/logOut",isAuth, logOut);
 
 export default router;
