@@ -1,6 +1,6 @@
-import Users from "../models/auth.js"
-import { sendToken } from "../sender/sender.js"
-import { BadRequestError, NotFoundError } from "../sender/customErrors.js"
+import Users from "../models/auth.js";
+import { sendToken } from "../sender/sender.js";
+import { BadRequestError, NotFoundError } from "../sender/customErrors.js";
 
 export const register = async (req, res, next) => {
   try {
@@ -14,7 +14,6 @@ export const register = async (req, res, next) => {
     next(error);
   }
 };
-
 
 export const login = async (req, res, next) => {
   try {
@@ -33,6 +32,18 @@ export const login = async (req, res, next) => {
   }
 };
 
-export const logOut = async (req,res)=>{
-  console.log("The logOut is runing")
-} 
+export const logOut = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      title: "Success",
+      message: "Logout successful",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      title: "Error",
+      message: "An error occurred during logout",
+    });
+  }
+};

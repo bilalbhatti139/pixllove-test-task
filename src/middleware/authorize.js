@@ -7,12 +7,12 @@ export const isAuth = async (req, res, next) => {
     let token = req?.headers["authorization"]?.split(" ")[1];
     // console.log("2nd", token);
     if (!token) {
-      return sendResponse(res, false, "You must be logged in");
+       return res
+         .status(401)
+         .json({ success: false, title: "failed", message: "User Must Login" });
     }
 
-    // console.log(token);
-    console.log("key is :",process.env.JWT_SECRET)
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
     
     // console.log(decoded);
     
@@ -21,8 +21,10 @@ export const isAuth = async (req, res, next) => {
     // if (decoded.exp && decoded.exp < currentTimestamp) {
     //   return sendResponse(res, false, "JWT token has expired");
     // }
-    req.user = await RegisterModel.findById(decoded._id);
-
+    const user = await RegisterModel.findById(decoded._id);
+    req.user= user
+    user.last_login_date = Date.now();
+    await user.save();
     // console.log(req.user);
     next();
   } catch (error) {
